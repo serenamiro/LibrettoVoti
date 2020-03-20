@@ -2,6 +2,7 @@ package it.polito.tdp.libretto.model;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Classe Libretto, memorizza e gestisce i voti superati.
@@ -11,7 +12,21 @@ import java.util.ArrayList;
 public class Libretto {
 	
 	private List<Voto> voti = new ArrayList<>();
+		
+	public Libretto() {
+		super();
+	}
 	
+	/**
+	 * Copy constructor
+	 * "Shallow" (copia superficiale)
+	 * @param lib
+	 */
+	public Libretto(Libretto lib) {
+		super();
+		this.voti.addAll(lib.voti);
+	}
+
 	/**
 	 * Aggiunge un voto al libretto
 	 * @param v voto da aggiungere
@@ -134,4 +149,61 @@ public class Libretto {
 		}
 		return (esiste.getVoto() != v.getVoto());
 	}
+	
+	
+	/**
+	 * Restituisce un nuovo libretto migliorando i voti del libretto attuale
+	 * @return
+	 */
+	public Libretto creaLibrettoMigliorato() {
+		Libretto nuovo = new Libretto();
+		for(Voto v : this.voti) {
+			Voto v2 = v.clone(); // usando il metodo clone()
+			// alternativamente:
+			// Voto v2 = new Voto(v); usando il copy constructor
+			
+			if(v2.getVoto() >= 24) {
+				v2.setVoto(v2.getVoto() +2);
+				if(v2.getVoto()>30) {
+					v2.setVoto(30);
+				}
+			} else if (v2.getVoto() >= 18) {
+				v2.setVoto(v2.getVoto()+1);
+			}
+			nuovo.add(v2);
+		}
+		return nuovo;
+	}
+	
+	
+	/**
+	 * riordina i voti presenti nel libretto corrente alfabeticamente per corso
+	 */
+	public void ordinaPerCorso() {
+		Collections.sort(this.voti);
+	}
+	
+	public void ordinaPerVoto() {
+		Collections.sort(this.voti, new ConfrontaVotiPerValutazione());
+	}
+	
+	/**
+	 * Elimina dal libretto tutti i voti <24
+	 */
+	public void cancellaVotiScarsi() {
+		// Non posso modificare il contenuto di una lista mentre sto iterando
+		List<Voto> daRimuovere = new ArrayList<>();
+		for(Voto v : this.voti) {
+			if(v.getVoto()<24) {
+				daRimuovere.add(v);
+			}
+		}
+		/*
+		for(Voto v : daRimuovere) {
+			this.voti.remove(v);
+		}
+		*/
+		this.voti.removeAll(daRimuovere);
+	}
+	
 }

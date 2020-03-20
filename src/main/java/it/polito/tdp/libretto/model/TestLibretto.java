@@ -43,7 +43,26 @@ public class TestLibretto {
 		System.out.println("Economia con 24 è duplicato: "+lib.isDuplicato(economia2)+"/ conflitto: "+lib.isConflitto(economia2));
 		System.out.println("Economia con 24 è duplicato: "+lib.isDuplicato(economia3)+"/ conflitto: "+lib.isConflitto(economia3));
 		
-	
+		// 6. Migliora il libretto
+		Libretto migliorato = lib.creaLibrettoMigliorato();
+		System.out.println("\nMiglioramento del libretto:");
+		System.out.println(lib);
+		System.out.println(migliorato);
+		
+		// 7. Stampa in ordine alfabetico
+		Libretto alfabetico = new Libretto(lib);
+		alfabetico.ordinaPerCorso();
+		System.out.println(alfabetico);
+		// 7. Stampa in ordine di voto
+		Libretto votiDecrescenti = new Libretto(lib);
+		votiDecrescenti.ordinaPerVoto();
+		System.out.println(votiDecrescenti);
+		
+		// 8. Elimina voti bassi
+		lib.add(new Voto("Chimica", 19, LocalDate.now() ));
+		System.out.println(lib);
+		lib.cancellaVotiScarsi();
+		System.out.println(lib);
 	}
 
 	public static void main(String[] args) {
